@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tim Zhang | Data &amp; AI Engineer</title>
-  <meta name="description" content="Tim Zhang — Hybrid Data Engineer & AI Engineer portfolio. Enterprise data pipelines, Agentic RAG systems, and cloud-native AI deployments.">
+  <title>Tim Zhang | Data Engineer | AI-Driven Pipeline Architect</title>
+  <meta name="description" content="Tim Zhang — Data Engineer & AI-Driven Pipeline Architect portfolio. Enterprise data pipelines, Agentic RAG systems, and cloud-native AI deployments.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -28,18 +28,15 @@
 
 <!-- ========== HOME / HERO ========== -->
 <section id="home" class="hero">
-  <h1>Building <span>Intelligent Data Systems</span><br>from Pipeline to Production</h1>
-  <p class="subtitle">Hybrid Data &amp; AI Engineer with 4+ years delivering enterprise data warehouses, real-time pipelines, and LLM-powered Agentic systems — turning raw data into measurable business outcomes.</p>
+  <h1 class="hero-name">Tim Zhang</h1>
+  <p class="positioning">Seeking a <strong>Data & AI Engineering</strong> role to apply end-to-end pipeline design and LLM-powered system building for measurable business impact.</p>
   <div class="tags">
     <span class="tag">Data Engineering</span>
     <span class="tag">Agentic RAG</span>
     <span class="tag">Python</span>
     <span class="tag">SQL</span>
-    <span class="tag">GCP / Cloud Run</span>
+    <span class="tag">GCP / Cloud</span>
     <span class="tag">LangChain</span>
-    <span class="tag">FastAPI</span>
-    <span class="tag">Spark / Hive</span>
-    <span class="tag">PostgreSQL</span>
   </div>
 </section>
 
@@ -50,14 +47,14 @@
     <div class="section-rule"></div>
     <div class="about-grid">
       <div class="about-text">
-        <p>I'm Weijian (Tim) Zhang — a data and AI engineer who bridges the gap between scalable data infrastructure and production-grade AI applications. I hold an MSc in Artificial Intelligence and Business Analytics (Lingnan University, Hong Kong) and bring 4+ years of hands-on delivery across financial services, government technology, and global retail.</p>
+        <p>I'm Weijian (Tim) Zhang — a data engineer and AI-driven pipeline architect who bridges the gap between scalable data infrastructure and production-grade AI applications. I hold an MSc in Artificial Intelligence and Business Analytics (Lingnan University, Hong Kong) and bring 8+ years of hands-on delivery across financial services, government technology, and global retail.</p>
         <p>My career has followed a clear trajectory: from designing enterprise data warehouses processing billions of daily transactions for banking clients, to building real-time data quality monitoring for Walmart's B2B platform, and most recently architecting Agentic LLM systems for Hong Kong government slope maintenance operations.</p>
         <p>I specialize in the full lifecycle — from raw data ingestion and warehouse modeling to LLM orchestration, retrieval-augmented generation, and cloud-native deployment on GCP. Whether it's a 5-layer dimensional model or a 7-layer Agent architecture, I focus on one thing: delivering systems that produce measurable improvements.</p>
       </div>
       <div class="about-highlights">
         <div class="highlight-card">
           <h4>Education</h4>
-          <p>MSc in Artificial Intelligence and Business Analytics — Lingnan University, HK (2024–2025)<br>Bachelor of Management — Shenzhen University, China (2014–2017)</p>
+          <p>MSc in Artificial Intelligence and Business Analytics — Lingnan University, HK (2025–2026)<br>Bachelor of Management — Shenzhen University, China (2014–2017)</p>
         </div>
         <div class="highlight-card">
           <h4>Domain Experience</h4>
@@ -170,29 +167,33 @@
       <div class="project-card hero-card">
         <div class="project-header">
           <h3>SRR — Agentic Case Processing System</h3>
-          <span class="project-meta">Hong Kong · 2024–2025</span>
+          <span class="project-meta">Hong Kong · 2025–2026</span>
         </div>
-        <div class="project-role">Lead AI Architect &amp; Full-Stack Developer (99.4% contribution)</div>
+        <div class="project-role">Technical Lead (99.4% contribution) · Lingnan Cup Competition Project</div>
         <div class="project-body">
           <div class="project-field">
             <h4>Problem</h4>
-            <p>Hong Kong government slope repair applications required 40+ minutes of manual processing per case, with inconsistent quality across officers and high operational cost (~HK$8.52M/year).</p>
-          </div>
-          <div class="project-field">
-            <h4>Data</h4>
-            <p>Multi-format documents: PDF slope reports, government regulation PDFs, historical GIS records, and citizen application forms — processed via OCR and structured extraction.</p>
+            <p>Hong Kong Architectural Services Department (ArchSD) case processing relied on manual entry and routing, with average processing cycles lasting days and high error rates.</p>
           </div>
           <div class="project-field">
             <h4>Approach</h4>
-            <p>Designed a 7-layer Agent architecture with 15 atomic capabilities. Core innovations: LLM-as-Judge quality gate (semantic + structural + hallucination checks), self-repair loops, multi-source RAG with pgvector, and code-driven orchestration with LLM-only for decision nodes.</p>
+            <ul>
+              <li>Designed 7-layer Agentic processing architecture with 17 pluggable atomic capabilities</li>
+              <li>Built multi-format document parsing pipeline with field extraction (A-Q categories) for ICC 1823, TMO, RCC channels</li>
+              <li>Integrated OpenAI GPT-4o with text-embedding-3-small for intelligent classification and response generation</li>
+              <li>Implemented pgvector-based semantic case retrieval with RRF fusion ranking</li>
+              <li>Developed 3-tier quality assessment system (L1 keyword → L2 rules → L3 RAGAS LLM-as-Judge)</li>
+              <li>Created self-healing mechanism with Best-of-N selection and 4-category failure differential rollback</li>
+              <li>Deployed on Google Cloud Run with Cloud SQL and Docker for auto-scaling</li>
+            </ul>
           </div>
           <div class="project-field">
             <h4>Outcome</h4>
-            <p>Reduced processing time by 75% (40 min → 10 min). Achieved 99.95% data consistency. Projected annual cost savings of HK$6.39M. System handles 15,000+ cases/year with sub-minute response time.</p>
+            <p>67 commits, 80,430 lines of code across two iterations. 12/12 requirements fully implemented with end-to-end automation. Reduced processing time by 75% (40 min → 10 min). Projected annual cost savings of HK$6.39M.</p>
           </div>
           <div class="project-field full">
             <h4>Tech Stack</h4>
-            <p>Python · LangChain · OpenAI GPT-4 · Google Gemini · PostgreSQL + pgvector · FastAPI · Docker · GCP Cloud Run</p>
+            <p>Python 3.11+ · FastAPI · React + TypeScript · PostgreSQL 15 + pgvector · OpenAI GPT-4o · Google Cloud Run + Cloud SQL · Docker</p>
           </div>
           <div class="project-tags">
             <span class="tag">Agentic AI</span>
@@ -211,7 +212,7 @@
       <div class="project-card hero-card">
         <div class="project-header">
           <h3>LingO — Multi-Agent University Consultation System</h3>
-          <span class="project-meta">Lingnan University · 2024–2025</span>
+          <span class="project-meta">Lingnan University · 2025–2026</span>
         </div>
         <div class="project-role">System Architect &amp; Lead Developer</div>
         <div class="project-body">
@@ -242,6 +243,9 @@
             <span class="tag">Education</span>
             <span class="tag">RBAC</span>
           </div>
+          <div class="project-links">
+            <a href="https://github.com/terzotian/RAGagent" target="_blank" rel="noopener">GitHub Repo →</a>
+          </div>
         </div>
       </div>
 
@@ -249,7 +253,7 @@
       <div class="project-card hero-card">
         <div class="project-header">
           <h3>Walmart B2B Data Platform Modernization</h3>
-          <span class="project-meta">Walmart China · 2023–2024</span>
+          <span class="project-meta">Walmart China · 2023–2025</span>
         </div>
         <div class="project-role">Data Engineer — Delivered for Walmart B2B via Shenzhen RenruiHR</div>
         <div class="project-body">
@@ -288,28 +292,6 @@
     <!-- SUPPORTING PROJECTS -->
     <div class="project-tier-label">Supporting Projects</div>
     <div class="projects-grid">
-
-      <!-- RAGagent -->
-      <div class="project-card supporting-card">
-        <div class="project-header">
-          <h3>RAGagent — University Policy Q&amp;A Chatbot</h3>
-          <span class="project-meta">Academic Project · 2024</span>
-        </div>
-        <div class="project-body">
-          <div class="project-field full">
-            <p>Built a retrieval-augmented generation chatbot for campus policy queries. Implemented document chunking, embedding with OpenAI, vector search via pgvector, and a Streamlit interface with multi-turn conversation support.</p>
-          </div>
-          <div class="project-tags">
-            <span class="tag">RAG</span>
-            <span class="tag">LangChain</span>
-            <span class="tag">pgvector</span>
-            <span class="tag">Streamlit</span>
-          </div>
-          <div class="project-links">
-            <a href="https://github.com/terzotian/RAGagent" target="_blank" rel="noopener">GitHub Repo →</a>
-          </div>
-        </div>
-      </div>
 
       <!-- Walmart Financial Monitoring -->
       <div class="project-card supporting-card">
@@ -388,7 +370,7 @@
 
       <div class="timeline-item">
         <h4>Data Engineer</h4>
-        <div class="timeline-company">Delivered for Banking Clients via Hangzhou Yatop Technology</div>
+        <div class="timeline-company">Hangzhou Yatop Technology</div>
         <div class="timeline-date">Apr 2021 – Aug 2023 · Hangzhou</div>
         <ul>
           <li>Delivered enterprise data warehouse for Bank of Ningbo: designed 5-layer EDW architecture (ODS → DWD → DWS → ADS → RPT) processing billions of daily transactions.</li>
@@ -399,7 +381,7 @@
 
       <div class="timeline-item">
         <h4>Data Engineer</h4>
-        <div class="timeline-company">Shenzhen Owned Technology — Delivered for Bank of Ningbo</div>
+        <div class="timeline-company">Shenzhen Owned Technology</div>
         <div class="timeline-date">Feb 2019 – Mar 2021 · Shenzhen</div>
         <ul>
           <li>Developed and maintained data model layer of Bank of Ningbo's data warehouse, supplying data for downstream financial reporting.</li>
