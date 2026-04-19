@@ -89,18 +89,6 @@ section:nth-child(even){background:var(--surface)}
 .resume-btn{display:inline-block;background:var(--accent);color:#fff;font-weight:600;font-size:.92rem;padding:.75rem 2rem;border-radius:8px;text-decoration:none;transition:background .2s}
 .resume-btn:hover{background:#3b75e6}
 
-/* EXPERIENCE TIMELINE */
-.timeline{position:relative;margin-top:2.5rem;text-align:left;max-width:720px;margin-left:auto;margin-right:auto}
-.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--border)}
-.timeline-item{padding-left:1.8rem;margin-bottom:2rem;position:relative}
-.timeline-item::before{content:'';position:absolute;left:-5px;top:.35rem;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
-.timeline-item h4{font-size:1rem;font-weight:700;color:var(--heading)}
-.timeline-item .timeline-company{font-size:.88rem;color:var(--accent2);font-weight:500}
-.timeline-item .timeline-date{font-size:.78rem;color:var(--muted);margin-bottom:.5rem}
-.timeline-item ul{list-style:none;padding:0}
-.timeline-item li{font-size:.88rem;color:var(--text);padding:.25rem 0;padding-left:1rem;position:relative}
-.timeline-item li::before{content:'';position:absolute;left:0;top:.6rem;width:5px;height:5px;border-radius:50%;background:var(--muted)}
-
 /* CONTACT */
 .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.2rem;max-width:600px;margin:0 auto}
 .contact-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;text-align:center}
