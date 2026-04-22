@@ -57,6 +57,87 @@ body.nav-open {
   overflow: hidden;
 }
 
+body.motion-ready .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  filter: blur(2px);
+  transition:
+    opacity 720ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 720ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 720ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform, filter;
+}
+
+body.motion-ready .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+body.motion-ready .reveal-item {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 560ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.motion-ready .hero-copy.is-visible .reveal-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.motion-ready .hero-copy.is-visible .reveal-item:nth-child(1) {
+  transition-delay: 0.08s;
+}
+
+body.motion-ready .hero-copy.is-visible .reveal-item:nth-child(2) {
+  transition-delay: 0.16s;
+}
+
+body.motion-ready .hero-copy.is-visible .reveal-item:nth-child(3) {
+  transition-delay: 0.26s;
+}
+
+body.motion-ready .hero-copy.is-visible .reveal-item:nth-child(4) {
+  transition-delay: 0.4s;
+}
+
+body.motion-ready .hero-copy.is-visible .reveal-item:nth-child(5) {
+  transition-delay: 0.52s;
+}
+
+body.motion-ready .hero-copy.is-visible .reveal-item:nth-child(6) {
+  transition-delay: 0.62s;
+}
+
+.typewriter-text {
+  display: inline;
+}
+
+.typewriter-caret::after {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 0.95em;
+  margin-left: 0.08em;
+  vertical-align: -0.08em;
+  background: currentColor;
+  animation: blink-caret 1s steps(1, end) infinite;
+}
+
+@keyframes blink-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
 ::selection {
   background: rgba(201, 100, 66, 0.18);
   color: var(--text);
@@ -403,6 +484,11 @@ h4 {
   color: var(--text-deep);
   font-size: 0.97rem;
   line-height: 1.75;
+}
+
+.display-title.typewriter-caret::after {
+  height: 0.9em;
+  vertical-align: -0.1em;
 }
 
 .hero-actions {
@@ -939,6 +1025,32 @@ h4 {
   border-top: 1px solid var(--border-strong);
   color: var(--text-muted);
   font-size: 0.88rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  body.motion-ready .reveal,
+  body.motion-ready .reveal-item {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .typewriter-caret::after {
+    display: none;
+  }
 }
 
 @media (max-width: 1120px) {
