@@ -1100,8 +1100,8 @@ h4 {
 }
 
 .fwa-node-diagnosis {
-  left: 13%;
-  bottom: 18%;
+  left: 12%;
+  bottom: 17%;
 }
 
 .fwa-node-receipt {
@@ -1111,7 +1111,7 @@ h4 {
 
 .fwa-node-amount {
   left: 50%;
-  bottom: 7%;
+  bottom: 8%;
   transform: translateX(-50%);
 }
 
@@ -1139,9 +1139,9 @@ h4 {
 }
 
 .fwa-edge-c {
-  left: 31%;
-  top: 51%;
-  width: 25%;
+  left: 43%;
+  top: 52%;
+  width: 24%;
   transform: rotate(142deg);
 }
 
@@ -1153,9 +1153,9 @@ h4 {
 }
 
 .fwa-edge-e {
-  left: 49%;
-  top: 56%;
-  width: 20%;
+  left: 50%;
+  top: 52%;
+  width: 23%;
   transform: rotate(90deg);
 }
 
