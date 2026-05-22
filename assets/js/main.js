@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         rootMargin: "0px 0px -12% 0px",
-        threshold: 0.14,
+        threshold: 0.03,
       }
     );
 
