@@ -781,6 +781,18 @@ h4 {
   box-shadow: 0 0 0 1px var(--border-strong), rgba(20, 20, 19, 0.08) 0 12px 30px;
 }
 
+.project-story-fwa {
+  background:
+    linear-gradient(180deg, rgba(250, 249, 245, 0.96), rgba(241, 246, 244, 0.9)),
+    var(--surface);
+}
+
+.project-story-fwa .story-kicker,
+.project-story-fwa .story-side-label,
+.project-story-fwa .story-label {
+  color: #2f7f7a;
+}
+
 .story-rail {
   padding-right: 1rem;
   border-right: 1px solid var(--border-strong);
@@ -991,6 +1003,192 @@ h4 {
 }
 
 .research-status-card p {
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.fwa-flow-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr);
+  gap: 1rem;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: #132321;
+  color: var(--dark-text);
+  box-shadow: 0 0 0 1px rgba(19, 35, 33, 0.18), rgba(20, 20, 19, 0.08) 0 14px 34px;
+}
+
+.fwa-flow-copy {
+  display: grid;
+  align-content: center;
+  gap: 0.8rem;
+  padding: 1.25rem;
+}
+
+.fwa-flow-copy h4 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.55rem, 2.4vw, 2rem);
+  font-weight: 500;
+  line-height: 1.18;
+}
+
+.fwa-flow-copy p:last-child {
+  color: var(--dark-muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.fwa-graph-map {
+  position: relative;
+  min-height: 20rem;
+  margin: 0.85rem;
+  overflow: hidden;
+  border-radius: calc(var(--radius-md) - 2px);
+  background:
+    radial-gradient(circle at 50% 45%, rgba(95, 211, 192, 0.18), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.fwa-graph-map::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(250, 249, 245, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(250, 249, 245, 0.05) 1px, transparent 1px);
+  background-size: 2.4rem 2.4rem;
+}
+
+.fwa-node {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.4rem;
+  min-height: 2.35rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(250, 249, 245, 0.94);
+  color: #132321;
+  box-shadow: 0 0 0 1px rgba(95, 211, 192, 0.34), 0 10px 24px rgba(0, 0, 0, 0.18);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.fwa-node-claim {
+  left: 50%;
+  top: 43%;
+  transform: translate(-50%, -50%);
+  min-width: 6rem;
+  min-height: 3rem;
+  background: #5fd3c0;
+}
+
+.fwa-node-doctor {
+  left: 9%;
+  top: 17%;
+}
+
+.fwa-node-hospital {
+  right: 9%;
+  top: 19%;
+}
+
+.fwa-node-diagnosis {
+  left: 13%;
+  bottom: 18%;
+}
+
+.fwa-node-receipt {
+  right: 14%;
+  bottom: 17%;
+}
+
+.fwa-node-amount {
+  left: 50%;
+  bottom: 7%;
+  transform: translateX(-50%);
+}
+
+.fwa-edge {
+  position: absolute;
+  z-index: 1;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(95, 211, 192, 0.58);
+  transform-origin: left center;
+}
+
+.fwa-edge-a {
+  left: 28%;
+  top: 31%;
+  width: 27%;
+  transform: rotate(20deg);
+}
+
+.fwa-edge-b {
+  left: 53%;
+  top: 44%;
+  width: 30%;
+  transform: rotate(-32deg);
+}
+
+.fwa-edge-c {
+  left: 31%;
+  top: 51%;
+  width: 25%;
+  transform: rotate(142deg);
+}
+
+.fwa-edge-d {
+  left: 52%;
+  top: 51%;
+  width: 27%;
+  transform: rotate(40deg);
+}
+
+.fwa-edge-e {
+  left: 49%;
+  top: 56%;
+  width: 20%;
+  transform: rotate(90deg);
+}
+
+.fwa-evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.fwa-evidence-card {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: #edf5f2;
+  box-shadow: 0 0 0 1px rgba(47, 127, 122, 0.16);
+}
+
+.fwa-evidence-card span {
+  color: #2f7f7a;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fwa-evidence-card strong {
+  color: var(--text-deep);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.fwa-evidence-card p {
   color: var(--text-soft);
   font-size: 0.82rem;
   line-height: 1.5;
@@ -1318,7 +1516,7 @@ h4 {
 
 .support-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
   gap: 1rem;
 }
 
@@ -1479,6 +1677,8 @@ h4 {
   .story-proof-grid,
   .story-media-strip,
   .research-status-grid,
+  .fwa-flow-panel,
+  .fwa-evidence-grid,
   .story-video-panel {
     grid-template-columns: 1fr;
   }
