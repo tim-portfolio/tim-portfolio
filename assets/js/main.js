@@ -7,11 +7,125 @@ document.addEventListener("DOMContentLoaded", () => {
   const sections = Array.from(document.querySelectorAll("section[id]"));
   const revealNodes = Array.from(document.querySelectorAll(".reveal"));
   const typewriterNodes = Array.from(document.querySelectorAll("[data-typewriter]"));
+  const languageToggle = document.querySelector("[data-lang-toggle]");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const i18n = window.PORTFOLIO_I18N || {};
+  const zhTranslations = i18n.zh || {};
+  const enTranslations = Object.fromEntries(
+    Object.entries(zhTranslations).map(([english, chinese]) => [chinese, english])
+  );
+  const normalizeText = (value) => (value || "").replace(/\s+/g, " ").trim();
+  const getStoredLanguage = () => {
+    try {
+      return window.localStorage.getItem("portfolio-language");
+    } catch {
+      return null;
+    }
+  };
+  let currentLanguage = getStoredLanguage() === "zh" ? "zh" : "en";
+  let typewriters = [];
+
+  const translateValue = (value, language) => {
+    const key = normalizeText(value);
+    if (!key) return value;
+    return language === "zh"
+      ? (zhTranslations[key] || value)
+      : (enTranslations[key] || value);
+  };
+
+  const setTextNodeValue = (node, value) => {
+    const original = node.nodeValue || "";
+    const leading = original.match(/^\s*/)?.[0] || "";
+    const trailing = original.match(/\s*$/)?.[0] || "";
+    node.nodeValue = `${leading}${value}${trailing}`;
+  };
+
+  const translateTextNodes = (language) => {
+    const walker = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode(node) {
+          const parent = node.parentElement;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          if (parent.closest("script, style")) return NodeFilter.FILTER_REJECT;
+          if (!normalizeText(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        },
+      }
+    );
+
+    const nodes = [];
+    while (walker.nextNode()) {
+      nodes.push(walker.currentNode);
+    }
+
+    nodes.forEach((node) => {
+      const translated = translateValue(node.nodeValue, language);
+      if (translated !== node.nodeValue) {
+        setTextNodeValue(node, translated);
+      }
+    });
+  };
+
+  const updateLanguageControl = (language) => {
+    if (!languageToggle) return;
+    languageToggle.textContent = language === "zh" ? "EN" : "中文";
+    languageToggle.setAttribute("aria-pressed", String(language === "zh"));
+    languageToggle.setAttribute(
+      "aria-label",
+      language === "zh" ? "Switch to English" : "切换到中文"
+    );
+  };
+
+  const cancelTypewriter = (instance) => {
+    if (!instance) return;
+    instance.timers.forEach((timer) => window.clearTimeout(timer));
+    instance.timers = [];
+    instance.started = true;
+    instance.node.classList.remove("typewriter-caret");
+  };
+
+  const syncTypewritersToLanguage = (language) => {
+    typewriters.forEach((instance) => {
+      cancelTypewriter(instance);
+      const translated = translateValue(instance.text || instance.node.textContent, language);
+      instance.text = translated;
+      instance.node.textContent = translated;
+      instance.node.setAttribute("aria-label", translated);
+    });
+  };
+
+  const applyLanguage = (language, options = {}) => {
+    const nextLanguage = language === "zh" ? "zh" : "en";
+    currentLanguage = nextLanguage;
+    document.documentElement.lang = nextLanguage === "zh" ? "zh-Hans" : "en";
+    document.title = i18n.title?.[nextLanguage] || document.title;
+    const pageDescription = i18n.description?.[nextLanguage];
+    if (pageDescription) {
+      document.querySelector('meta[name="description"]')?.setAttribute("content", pageDescription);
+    }
+
+    if (typewriters.length) {
+      syncTypewritersToLanguage(nextLanguage);
+    }
+    translateTextNodes(nextLanguage);
+    updateLanguageControl(nextLanguage);
+
+    if (options.persist !== false) {
+      try {
+        window.localStorage.setItem("portfolio-language", nextLanguage);
+      } catch {
+        // Ignore storage failures; language switching still works for the session.
+      }
+    }
+  };
 
   if (!prefersReducedMotion) {
     body.classList.add("motion-ready");
   }
+
+  applyLanguage(currentLanguage, { persist: false });
 
   const closeMenu = () => {
     if (!toggle || !panel) return;
@@ -42,14 +156,16 @@ document.addEventListener("DOMContentLoaded", () => {
       speed: Number(node.dataset.typeSpeed || 26),
       delay: Number(node.dataset.typeDelay || 0),
       started: false,
+      timers: [],
     };
   };
 
-  const typewriters = typewriterNodes
+  typewriters = typewriterNodes
     .map(initializeTypewriter)
     .filter(Boolean);
 
   const finishTypewriter = (instance) => {
+    cancelTypewriter(instance);
     instance.node.textContent = instance.text;
     instance.node.classList.remove("typewriter-caret");
     instance.started = true;
@@ -62,20 +178,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const { node, text, speed, delay } = instance;
     let index = 0;
 
+    const schedule = (callback, timeout) => {
+      const timer = window.setTimeout(callback, timeout);
+      instance.timers.push(timer);
+    };
+
     const step = () => {
       index += 1;
       node.textContent = text.slice(0, index);
 
       if (index < text.length) {
-        window.setTimeout(step, speed);
+        schedule(step, speed);
       } else {
-        window.setTimeout(() => {
+        schedule(() => {
           node.classList.remove("typewriter-caret");
         }, 350);
       }
     };
 
-    window.setTimeout(step, delay);
+    schedule(step, delay);
   };
 
   if (prefersReducedMotion) {
@@ -98,6 +219,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!(target instanceof Node)) return;
       if (panel.contains(target) || toggle.contains(target)) return;
       closeMenu();
+    });
+  }
+
+  if (languageToggle) {
+    languageToggle.addEventListener("click", () => {
+      applyLanguage(currentLanguage === "zh" ? "en" : "zh");
     });
   }
 

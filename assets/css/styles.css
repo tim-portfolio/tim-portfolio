@@ -364,6 +364,37 @@ h4 {
   background: #3b3b38;
 }
 
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.3rem;
+  min-height: 2.65rem;
+  padding: 0.65rem 0.9rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text-deep);
+  box-shadow: var(--shadow-ring);
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, color 180ms ease;
+}
+
+.language-toggle:hover {
+  transform: translateY(-1px);
+  color: var(--brand);
+  box-shadow: var(--shadow-ring-deep);
+}
+
+.language-toggle:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
 .button-small {
   min-height: 2.65rem;
   padding: 0.7rem 1rem;
@@ -1850,6 +1881,10 @@ h4 {
   }
 
   .button-small {
+    width: 100%;
+  }
+
+  .language-toggle {
     width: 100%;
   }
 
