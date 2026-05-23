@@ -1,11 +1,11 @@
 window.PORTFOLIO_I18N = {
   title: {
     en: "Tim Zhang | Data + AI Systems Builder",
-    zh: "张伟健 Tim Zhang | 数据与 AI 系统工程师",
+    zh: "张威健 Tim Zhang | 数据与 AI 系统工程师",
   },
   description: {
     en: "Tim Zhang portfolio: award-winning SRR Agentic Case Processing System, MCC FWA insurance fraud graph intelligence, GaitGPT clinical gait analysis agent, and enterprise data engineering work.",
-    zh: "张伟健个人主页：展示 SRR 智能体案件处理系统、MCC FWA 保险反欺诈图谱、GaitGPT 临床步态分析，以及企业级数据工程经历。",
+    zh: "张威健个人主页：展示 SRR 智能体案件处理系统、MCC FWA 保险反欺诈图谱、GaitGPT 临床步态分析，以及企业级数据工程经历。",
   },
   zh: {
     "Tim Zhang": "Tim Zhang",
@@ -19,7 +19,7 @@ window.PORTFOLIO_I18N = {
     "Data + AI systems for real workflows": "为真实业务流程而建的数据 + AI 系统",
     "Open to Data & AI Engineering roles": "寻找数据 / AI 工程机会",
     "I build data and AI systems that survive real workflows.": "把数据和 AI 做成真正能用的系统。",
-    "I am Weijian (Tim) Zhang, a data engineer and AI-driven pipeline architect. I work across the full chain: ingestion, modeling, retrieval, evaluation, service design, and cloud deployment, with delivery experience spanning Hong Kong GovTech, insurance fraud detection, clinical gait AI, Walmart China, and enterprise banking.": "我是张伟健（Tim Zhang），专注数据工程与 AI 工作流架构。我的工作覆盖数据接入、建模、检索、评估、服务设计和云端部署，项目经验包括香港 GovTech、保险反欺诈、临床步态 AI、沃尔玛中国和银行数据平台。",
+    "I am Weijian (Tim) Zhang, a data engineer and AI-driven pipeline architect. I work across the full chain: ingestion, modeling, retrieval, evaluation, service design, and cloud deployment, with delivery experience spanning Hong Kong GovTech, insurance fraud detection, clinical gait AI, Walmart China, and enterprise banking.": "我是张威健（Tim Zhang），专注数据工程与 AI 工作流架构。我的工作覆盖数据接入、建模、检索、评估、服务设计和云端部署，项目经验包括香港 GovTech、保险反欺诈、临床步态 AI、沃尔玛中国和银行数据平台。",
     "Featured work includes an award-winning SRR Agentic Case Processing System, MCC FWA insurance fraud graph intelligence, GaitGPT, and enterprise warehouse modernization. The resume points here; the portfolio shows the systems.": "这里展示几套已经落到系统层面的作品：获奖的 SRR 智能体案件处理系统、MCC FWA 保险反欺诈图谱、GaitGPT，以及企业数仓现代化项目。简历讲经历，主页看系统。",
     "View Selected Work": "查看代表项目",
     "Start a Conversation": "联系我",
@@ -29,7 +29,7 @@ window.PORTFOLIO_I18N = {
     "Agentic workflows, clinical/financial AI, retrieval pipelines, data quality automation, and FastAPI services.": "智能体工作流、医疗/金融 AI、检索管线、数据质量自动化和 FastAPI 服务。",
     "What Teams Get": "我能带来的价值",
     "Someone who can connect warehouse discipline, model behavior, and production pragmatism.": "把数仓规范、模型能力和生产落地连在一起。",
-    "Weijian (Tim) Zhang": "张伟健（Tim Zhang）",
+    "Weijian (Tim) Zhang": "张威健（Tim Zhang）",
     "Data + AI Systems Builder": "数据与 AI 系统工程师",
     "Featured proof": "核心证明",
     "From dimensional models to award-winning agentic systems.": "从数仓建模到获奖智能体系统。",
@@ -253,6 +253,6 @@ window.PORTFOLIO_I18N = {
     "Best fit": "适合方向",
     "Data Engineer, AI Engineer, Platform Engineer, or hybrid data + AI product roles.": "数据工程、AI 工程、平台工程，或数据与 AI 产品工程岗位。",
     "Built with a warm editorial front end and a systems mindset.": "一个偏作品集表达、也保留系统工程思路的主页。",
-    "Tim (Weijian) Zhang": "张伟健（Tim Zhang）",
+    "Tim (Weijian) Zhang": "张威健（Tim Zhang）",
   },
 };
