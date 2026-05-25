@@ -6,15 +6,16 @@
 
 | 文件 | 用途 |
 |---|---|
-| `Tim_Zhang_Portfolio_Snapshot.pdf` | 个人主页 PDF 快照 |
+| `Tim_Zhang_Portfolio_Snapshot_CN.pdf` | 中文个人主页 PDF 快照 |
+| `Tim_Zhang_Portfolio_Snapshot_EN.pdf` | 英文个人主页 PDF 快照 |
 | `index.html` | 完整个人主页离线版 |
 | `assets/` | 图片、视频、简历等页面素材 |
 
 ## 使用方式
 
-1. 优先打开 `Tim_Zhang_Portfolio_Snapshot.pdf`。
-2. 如需查看完整网页效果，解压后打开 `index.html`。
-3. 视频、截图和简历文件都已包含在 `assets/` 目录中。
+1. 中文场景打开 `Tim_Zhang_Portfolio_Snapshot_CN.pdf`。
+2. 英文场景打开 `Tim_Zhang_Portfolio_Snapshot_EN.pdf`。
+3. 如需查看完整网页效果，解压后打开 `index.html`。
 
 ## 内容说明
 

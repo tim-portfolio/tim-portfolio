@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Build a China-friendly static mirror and offline sharing package."""
+"""Build bilingual portfolio delivery snapshots and a China-friendly mirror."""
 from __future__ import annotations
 
 import html
 import io
+import json
 import re
 import shutil
 import subprocess
@@ -15,10 +16,21 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist-cn"
 ASSETS = ROOT / "assets"
 README = ROOT / "README_CN.md"
+README_EN = ROOT / "README_EN.md"
 SNAPSHOT_PDF = ROOT / "Tim_Zhang_Portfolio_Snapshot.pdf"
 SNAPSHOT_HTML = ROOT / "Tim_Zhang_Portfolio_Snapshot.html"
 LONG_SCREENSHOT = ROOT / "Tim_Zhang_Portfolio_Long_Screenshot.png"
+SNAPSHOT_PDFS = {
+    "zh": ROOT / "Tim_Zhang_Portfolio_Snapshot_CN.pdf",
+    "en": ROOT / "Tim_Zhang_Portfolio_Snapshot_EN.pdf",
+}
+LONG_SCREENSHOTS = {
+    "zh": ROOT / "Tim_Zhang_Portfolio_Long_Screenshot_CN.png",
+    "en": ROOT / "Tim_Zhang_Portfolio_Long_Screenshot_EN.png",
+}
 OFFLINE_ZIP = ROOT / "Tim_Zhang_Portfolio_Offline.zip"
+DELIVERABLES = ROOT / "deliverables"
+LATEST = DELIVERABLES / "latest"
 PDF_FONT_NAME = "portfolio-cjk"
 PDF_FONT_CANDIDATES = [
     Path("/System/Library/Fonts/Supplemental/Arial Unicode.ttf"),
@@ -80,6 +92,8 @@ def copy_site() -> None:
     shutil.copytree(ASSETS, DIST / "assets", ignore=shutil.ignore_patterns(".DS_Store"))
     if README.exists():
         shutil.copy2(README, DIST / "README_CN.md")
+    if README_EN.exists():
+        shutil.copy2(README_EN, DIST / "README_EN.md")
 
 
 def remove_google_fonts(index_text: str) -> str:
@@ -150,15 +164,16 @@ def snapshot_html() -> str:
 """
 
 
-def capture_homepage_screenshot() -> bool:
+def capture_homepage_screenshot(language: str) -> bool:
     capture_script = ROOT / "scripts/capture_web_snapshot.mjs"
     if not capture_script.exists():
         return False
-    if LONG_SCREENSHOT.exists():
-        LONG_SCREENSHOT.unlink()
+    screenshot_path = LONG_SCREENSHOTS[language]
+    if screenshot_path.exists():
+        screenshot_path.unlink()
     url = (ROOT / "index.html").resolve().as_uri()
     result = subprocess.run(
-        ["node", str(capture_script), url, str(LONG_SCREENSHOT)],
+        ["node", str(capture_script), url, str(screenshot_path), f"--lang={language}"],
         cwd=ROOT,
         check=False,
         text=True,
@@ -169,15 +184,16 @@ def capture_homepage_screenshot() -> bool:
         if result.stderr.strip():
             print(result.stderr.strip())
         return False
-    return LONG_SCREENSHOT.exists()
+    return screenshot_path.exists()
 
 
-def screenshot_to_pdf() -> None:
+def screenshot_to_pdf(language: str) -> None:
     import fitz  # type: ignore
     from PIL import Image
 
     Image.MAX_IMAGE_PIXELS = None
-    image = Image.open(LONG_SCREENSHOT)
+    image = Image.open(LONG_SCREENSHOTS[language])
+    pdf_path = SNAPSHOT_PDFS[language]
     page_width = 595
     page_height = 842
     margin = 18
@@ -197,12 +213,12 @@ def screenshot_to_pdf() -> None:
         rect = fitz.Rect(margin, margin, margin + target_width, margin + display_height)
         page.insert_image(rect, stream=stream.getvalue())
         y = bottom
-    doc.save(SNAPSHOT_PDF, garbage=4, deflate=True)
+    doc.save(pdf_path, garbage=4, deflate=True)
     doc.close()
     image.close()
 
 
-def draw_pdf_with_fitz() -> None:
+def draw_pdf_with_fitz(output_path: Path = SNAPSHOT_PDF) -> None:
     import fitz  # type: ignore
 
     doc = fitz.open()
@@ -235,24 +251,47 @@ def draw_pdf_with_fitz() -> None:
             put(paragraph, 10, (0.08, 0.08, 0.07), 6)
         y += 4
     doc.subset_fonts()
-    doc.save(SNAPSHOT_PDF, garbage=4, deflate=True)
+    doc.save(output_path, garbage=4, deflate=True)
+    doc.close()
+
+
+def render_pdf_preview(pdf_path: Path, image_path: Path) -> None:
+    import fitz  # type: ignore
+
+    doc = fitz.open(pdf_path)
+    page = doc[0]
+    pix = page.get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
+    pix.save(image_path)
     doc.close()
 
 
 def write_snapshot_pdf() -> None:
     SNAPSHOT_HTML.write_text(snapshot_html(), encoding="utf-8")
-    if capture_homepage_screenshot():
-        screenshot_to_pdf()
-    else:
-        try:
-            draw_pdf_with_fitz()
-        except Exception as exc:
-            resume = ASSETS / "docs/Tim_Zhang_Resume.pdf"
-            if not resume.exists():
-                raise
-            shutil.copy2(resume, SNAPSHOT_PDF)
-            print(f"Warning: snapshot PDF fallback copied resume because PDF rendering failed: {exc}")
-    shutil.copy2(SNAPSHOT_PDF, DIST / SNAPSHOT_PDF.name)
+    for language in ["zh", "en"]:
+        if capture_homepage_screenshot(language):
+            screenshot_to_pdf(language)
+        elif language == "zh":
+            try:
+                draw_pdf_with_fitz(SNAPSHOT_PDFS[language])
+            except Exception as exc:
+                resume = ASSETS / "docs/Tim_Zhang_Resume.pdf"
+                if not resume.exists():
+                    raise
+                shutil.copy2(resume, SNAPSHOT_PDFS[language])
+                print(f"Warning: snapshot PDF fallback copied resume because PDF rendering failed: {exc}")
+            render_pdf_preview(SNAPSHOT_PDFS[language], LONG_SCREENSHOTS[language])
+        else:
+            shutil.copy2(SNAPSHOT_PDFS["zh"], SNAPSHOT_PDFS[language])
+            if LONG_SCREENSHOTS["zh"].exists():
+                shutil.copy2(LONG_SCREENSHOTS["zh"], LONG_SCREENSHOTS[language])
+            else:
+                render_pdf_preview(SNAPSHOT_PDFS[language], LONG_SCREENSHOTS[language])
+            print("Warning: English screenshot failed; copied Chinese snapshot as fallback.")
+    shutil.copy2(SNAPSHOT_PDFS["zh"], SNAPSHOT_PDF)
+    shutil.copy2(LONG_SCREENSHOTS["zh"], LONG_SCREENSHOT)
+    for path in [SNAPSHOT_PDF, *SNAPSHOT_PDFS.values(), *LONG_SCREENSHOTS.values()]:
+        if path.exists():
+            shutil.copy2(path, DIST / path.name)
     shutil.copy2(SNAPSHOT_HTML, DIST / SNAPSHOT_HTML.name)
     if LONG_SCREENSHOT.exists():
         shutil.copy2(LONG_SCREENSHOT, DIST / LONG_SCREENSHOT.name)
@@ -267,6 +306,74 @@ def write_zip() -> None:
                 archive.write(path, path.relative_to(DIST))
 
 
+def write_english_readme() -> None:
+    README_EN.write_text(
+        """# Weijian (Tim) Zhang Portfolio Offline Package
+
+This is an offline version of the portfolio for quick review when the website is temporarily unavailable.
+
+## Quick View
+
+| File | Purpose |
+|---|---|
+| `Tim_Zhang_Portfolio_Snapshot_EN.pdf` | English PDF snapshot |
+| `Tim_Zhang_Portfolio_Snapshot_CN.pdf` | Chinese PDF snapshot |
+| `index.html` | Full offline portfolio page |
+| `assets/` | Images, videos, resume, and page assets |
+
+## How to Use
+
+1. Open `Tim_Zhang_Portfolio_Snapshot_EN.pdf` first.
+2. Use `Tim_Zhang_Portfolio_Snapshot_CN.pdf` if a Chinese version is preferred.
+3. To view the full page experience, unzip the package and open `index.html`.
+""",
+        encoding="utf-8",
+    )
+
+
+def write_deliverables() -> None:
+    if LATEST.exists():
+        shutil.rmtree(LATEST)
+    LATEST.mkdir(parents=True, exist_ok=True)
+    files = [
+        SNAPSHOT_PDFS["zh"],
+        SNAPSHOT_PDFS["en"],
+        LONG_SCREENSHOTS["zh"],
+        LONG_SCREENSHOTS["en"],
+        OFFLINE_ZIP,
+        README,
+        README_EN,
+    ]
+    for path in files:
+        if path.exists():
+            shutil.copy2(path, LATEST / path.name)
+    manifest = {
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "commit": current_commit(),
+        "files": [
+            {
+                "name": path.name,
+                "size_bytes": path.stat().st_size,
+                "size": human_size(path),
+            }
+            for path in files
+            if path.exists()
+        ],
+        "command": "python3 scripts/build_cn_release.py",
+    }
+    (LATEST / "manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def current_commit() -> str:
+    try:
+        return subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, text=True).strip()
+    except Exception:
+        return "unknown"
+
+
 def assert_release() -> None:
     index = (DIST / "index.html").read_text(encoding="utf-8")
     css = (DIST / "assets/css/styles.css").read_text(encoding="utf-8")
@@ -277,6 +384,10 @@ def assert_release() -> None:
     assert (DIST / "assets/docs/Tim_Zhang_Resume.pdf").exists()
     assert (DIST / "assets/videos/gaitgpt/gaitgpt-flash2.mp4").exists()
     assert SNAPSHOT_PDF.exists()
+    assert SNAPSHOT_PDFS["zh"].exists()
+    assert SNAPSHOT_PDFS["en"].exists()
+    assert LONG_SCREENSHOTS["zh"].exists()
+    assert LONG_SCREENSHOTS["en"].exists()
     assert OFFLINE_ZIP.exists()
 
 
@@ -290,16 +401,20 @@ def human_size(path: Path) -> str:
 
 
 def main() -> None:
+    write_english_readme()
     copy_site()
     transform_index()
     transform_css()
     write_snapshot_pdf()
     write_zip()
+    write_deliverables()
     assert_release()
-    print("China fallback package generated.")
+    print("Portfolio delivery package generated.")
     print(f"- {DIST.relative_to(ROOT)}/")
+    print(f"- {LATEST.relative_to(ROOT)}/")
+    print(f"- {SNAPSHOT_PDFS['zh'].name}: {human_size(SNAPSHOT_PDFS['zh'])}")
+    print(f"- {SNAPSHOT_PDFS['en'].name}: {human_size(SNAPSHOT_PDFS['en'])}")
     print(f"- {OFFLINE_ZIP.name}: {human_size(OFFLINE_ZIP)}")
-    print(f"- {SNAPSHOT_PDF.name}: {human_size(SNAPSHOT_PDF)}")
 
 
 if __name__ == "__main__":

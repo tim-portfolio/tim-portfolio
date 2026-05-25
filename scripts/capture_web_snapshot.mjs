@@ -11,10 +11,12 @@ const chromeCandidates = [
   "/Applications/Chromium.app/Contents/MacOS/Chromium",
 ];
 
-const [, , inputUrl, outputPng] = process.argv;
+const [, , inputUrl, outputPng, ...flags] = process.argv;
+const langFlag = flags.find((flag) => flag.startsWith("--lang="));
+const snapshotLanguage = langFlag ? langFlag.split("=")[1] : "zh";
 
-if (!inputUrl || !outputPng) {
-  console.error("Usage: node scripts/capture_web_snapshot.mjs <url> <output.png>");
+if (!inputUrl || !outputPng || !["en", "zh"].includes(snapshotLanguage)) {
+  console.error("Usage: node scripts/capture_web_snapshot.mjs <url> <output.png> [--lang=en|zh]");
   process.exit(2);
 }
 
@@ -42,6 +44,9 @@ await mkdir(userDataDir, { recursive: true });
 const chrome = spawn(chromePath, [
   "--headless=new",
   "--disable-gpu",
+  "--disable-extensions",
+  "--disable-component-extensions-with-background-pages",
+  "--disable-background-networking",
   "--hide-scrollbars",
   "--no-first-run",
   "--no-default-browser-check",
@@ -58,7 +63,15 @@ const cleanup = async () => {
   } catch {
     // ignore cleanup failures
   }
-  await rm(userDataDir, { recursive: true, force: true });
+  await delay(400);
+  for (let i = 0; i < 5; i += 1) {
+    try {
+      await rm(userDataDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 200 });
+      return;
+    } catch {
+      await delay(250);
+    }
+  }
 };
 
 process.on("exit", () => {
@@ -160,13 +173,21 @@ try {
 
   const loaded = cdp.waitEvent("Page.loadEventFired", 20000);
   await cdp.send("Page.navigate", { url: inputUrl });
-  await loaded;
+  try {
+    await loaded;
+  } catch {
+    await delay(1500);
+  }
 
   await cdp.send("Runtime.evaluate", {
     expression: `
       (() => {
         const button = document.querySelector('[data-lang-toggle]');
-        if (button && button.textContent.trim() === '中文') button.click();
+        const language = ${JSON.stringify(snapshotLanguage)};
+        if (!button) return;
+        const label = button.textContent.trim();
+        if (language === 'zh' && label === '中文') button.click();
+        if (language === 'en' && label === 'EN') button.click();
       })();
     `,
   });

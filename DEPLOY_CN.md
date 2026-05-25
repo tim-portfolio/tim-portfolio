@@ -11,9 +11,12 @@ python3 scripts/build_cn_release.py
 | 产物 | 用途 |
 |---|---|
 | `dist-cn/` | 上传到 EdgeOne Pages 的静态站目录 |
+| `deliverables/latest/` | 每次对外发送的最新交付目录 |
 | `Tim_Zhang_Portfolio_Offline.zip` | 面试前发送的离线包 |
-| `Tim_Zhang_Portfolio_Snapshot.pdf` | 个人主页网页快照 |
-| `Tim_Zhang_Portfolio_Long_Screenshot.png` | 个人主页长截图 |
+| `Tim_Zhang_Portfolio_Snapshot_CN.pdf` | 中文个人主页网页快照 |
+| `Tim_Zhang_Portfolio_Snapshot_EN.pdf` | 英文个人主页网页快照 |
+| `Tim_Zhang_Portfolio_Long_Screenshot_CN.png` | 中文个人主页长截图 |
+| `Tim_Zhang_Portfolio_Long_Screenshot_EN.png` | 英文个人主页长截图 |
 
 ## EdgeOne Pages 上传
 
@@ -21,6 +24,12 @@ python3 scripts/build_cn_release.py
 2. 打开 EdgeOne Pages 的 Upload 入口。
 3. 上传 `dist-cn/` 目录内全部文件。
 4. 获得默认访问入口后，作为 GitHub Pages 的备用链接。
+
+## 交付习惯
+
+- 每次主页更新后，只运行一次 `python3 scripts/build_cn_release.py`。
+- 对外发送 `deliverables/latest/` 中的 PDF 或 ZIP。
+- `manifest.json` 会记录生成时间、当前 commit 和文件大小。
 
 ## 约束
 
