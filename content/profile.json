@@ -1,0 +1,29 @@
+{
+  "name": "Weijian (Tim) Zhang",
+  "name_cn": "张威健（Tim Zhang）",
+  "email": "weijianlucky@gmail.com",
+  "phones": {
+    "hk": {
+      "label": "HK",
+      "label_cn": "香港",
+      "display": "+852 84965467",
+      "tel": "+85284965467"
+    },
+    "mainland": {
+      "label": "Mainland",
+      "label_cn": "中国内地",
+      "display": "+86 131 6809 0613",
+      "tel": "+8613168090613"
+    }
+  },
+  "portfolio": {
+    "primary": "https://tim-portfolio.github.io/tim-portfolio/",
+    "resume_display": "tim-portfolio.github.io/tim-portfolio",
+    "future": "https://portfolio.timzhang.cn",
+    "edgeone": "https://tim-portfolio.edgeone.app"
+  },
+  "github": {
+    "url": "https://github.com/February13",
+    "display": "github.com/February13"
+  }
+}

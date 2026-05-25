@@ -248,11 +248,13 @@ window.PORTFOLIO_I18N = {
     "Strong foundations, measurable outcomes, and systems that can be maintained.": "基础扎实、结果可衡量，系统也能长期维护。",
     "If you need someone who can move between pipelines, platforms, and AI behavior, let's talk.": "如果你需要一个能同时理解数据管线、平台工程和 AI 行为的人，可以聊聊。",
     "I am especially interested in roles where data reliability and intelligent application design need to work together, not compete with each other.": "我尤其关注数据可靠性和智能应用设计需要一起发挥作用的岗位。",
+    // PROFILE:CONTACT_LABELS:START
     "Email": "邮箱",
     "Phone": "电话",
     "HK:": "香港：",
     "Mainland:": "中国内地：",
     "GitHub": "GitHub",
+    // PROFILE:CONTACT_LABELS:END
     "Best fit": "适合方向",
     "Data Engineer, AI Engineer, Platform Engineer, or hybrid data + AI product roles.": "数据工程、AI 工程、平台工程，或数据与 AI 产品工程岗位。",
     "Built with a warm editorial front end and a systems mindset.": "一个偏作品集表达、也保留系统工程思路的主页。",
