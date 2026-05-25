@@ -3,10 +3,8 @@
 from __future__ import annotations
 
 import html
-import os
 import re
 import shutil
-import textwrap
 import zipfile
 from datetime import datetime
 from pathlib import Path
@@ -18,11 +16,14 @@ README = ROOT / "README_CN.md"
 SNAPSHOT_PDF = ROOT / "Tim_Zhang_Portfolio_Snapshot.pdf"
 SNAPSHOT_HTML = ROOT / "Tim_Zhang_Portfolio_Snapshot.html"
 OFFLINE_ZIP = ROOT / "Tim_Zhang_Portfolio_Offline.zip"
-FONT_CANDIDATES = [
+PDF_FONT_NAME = "portfolio-cjk"
+PDF_FONT_CANDIDATES = [
+    Path("/System/Library/Fonts/Supplemental/Arial Unicode.ttf"),
     Path("/System/Library/Fonts/STHeiti Medium.ttc"),
     Path("/System/Library/Fonts/Hiragino Sans GB.ttc"),
     Path("/System/Library/Fonts/Supplemental/Songti.ttc"),
 ]
+CJK_FALLBACK_FONT_NAME = "china-s"
 
 GLOBAL_LINK_CSS = """
 
@@ -149,12 +150,14 @@ def snapshot_html() -> str:
 def draw_pdf_with_fitz() -> None:
     import fitz  # type: ignore
 
-    font = next((candidate for candidate in FONT_CANDIDATES if candidate.exists()), None)
-    if font is None:
-        raise RuntimeError("No Chinese system font found for PDF generation.")
-
     doc = fitz.open()
     page = doc.new_page(width=595, height=842)
+    font_path = next((candidate for candidate in PDF_FONT_CANDIDATES if candidate.exists()), None)
+    if font_path:
+        page.insert_font(fontname=PDF_FONT_NAME, fontfile=str(font_path))
+        font_name = PDF_FONT_NAME
+    else:
+        font_name = CJK_FALLBACK_FONT_NAME
     margin = 48
     y = 52
 
@@ -166,7 +169,7 @@ def draw_pdf_with_fitz() -> None:
             page = doc.new_page(width=595, height=842)
             y = 52
             rect = fitz.Rect(margin, y, 595 - margin, 812)
-        page.insert_textbox(rect, text, fontfile=str(font), fontsize=size, color=color, lineheight=1.25)
+        page.insert_textbox(rect, text, fontname=font_name, fontsize=size, color=color, lineheight=1.25)
         y += needed + gap
 
     put("张威健（Tim Zhang）Portfolio Snapshot", 20, (0.08, 0.08, 0.07), 8)
@@ -176,7 +179,8 @@ def draw_pdf_with_fitz() -> None:
         for paragraph in body.split("\n"):
             put(paragraph, 10, (0.08, 0.08, 0.07), 6)
         y += 4
-    doc.save(SNAPSHOT_PDF)
+    doc.subset_fonts()
+    doc.save(SNAPSHOT_PDF, garbage=4, deflate=True)
     doc.close()
 
 
