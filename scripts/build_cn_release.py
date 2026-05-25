@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import html
+import io
 import re
 import shutil
+import subprocess
 import zipfile
 from datetime import datetime
 from pathlib import Path
@@ -15,6 +17,7 @@ ASSETS = ROOT / "assets"
 README = ROOT / "README_CN.md"
 SNAPSHOT_PDF = ROOT / "Tim_Zhang_Portfolio_Snapshot.pdf"
 SNAPSHOT_HTML = ROOT / "Tim_Zhang_Portfolio_Snapshot.html"
+LONG_SCREENSHOT = ROOT / "Tim_Zhang_Portfolio_Long_Screenshot.png"
 OFFLINE_ZIP = ROOT / "Tim_Zhang_Portfolio_Offline.zip"
 PDF_FONT_NAME = "portfolio-cjk"
 PDF_FONT_CANDIDATES = [
@@ -48,7 +51,7 @@ a.text-link[data-global-link="true"] .global-link-note {
 
 SNAPSHOT_SECTIONS = [
     (
-        "定位",
+        "个人定位",
         "张威健（Tim Zhang）是一名数据工程与 AI 系统工程方向候选人，重点展示真实流程中的数据接入、建模、检索、评估、服务设计和云端部署能力。",
     ),
     (
@@ -59,12 +62,12 @@ SNAPSHOT_SECTIONS = [
         "企业数据平台：跨国零售企业级数据平台与商业银行数据中台，不展示具体公司名。",
     ),
     (
-        "离线使用",
-        "如果网页打不开，请优先打开 Tim_Zhang_Portfolio_Snapshot.pdf。若需要完整素材，可解压 Tim_Zhang_Portfolio_Offline.zip 后打开 index.html。",
+        "核心能力",
+        "数据工程、智能体工作流、医疗/金融 AI、检索管线、数据质量自动化、FastAPI 服务和云端部署。",
     ),
     (
-        "国内访问兜底",
-        "主站继续保留 GitHub Pages；国内备用入口使用 EdgeOne Pages 默认域名上传 dist-cn/；暂无域名时不走 ICP 备案版正式站。",
+        "查看方式",
+        "这是一份个人主页快照，用于在网页暂时无法访问时快速了解项目结构和代表成果。",
     ),
 ]
 
@@ -140,11 +143,63 @@ def snapshot_html() -> str:
 </head>
 <body>
   <h1>张威健（Tim Zhang）Portfolio Snapshot</h1>
-  <p class="meta">生成时间：{generated_at} ｜ 国内访问兜底：GitHub Pages + EdgeOne Pages 镜像 + 离线包</p>
+  <p class="meta">生成时间：{generated_at} ｜ 个人主页快照</p>
   {''.join(blocks)}
 </body>
 </html>
 """
+
+
+def capture_homepage_screenshot() -> bool:
+    capture_script = ROOT / "scripts/capture_web_snapshot.mjs"
+    if not capture_script.exists():
+        return False
+    if LONG_SCREENSHOT.exists():
+        LONG_SCREENSHOT.unlink()
+    url = (ROOT / "index.html").resolve().as_uri()
+    result = subprocess.run(
+        ["node", str(capture_script), url, str(LONG_SCREENSHOT)],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        print("Warning: homepage screenshot capture failed; using text snapshot fallback.")
+        if result.stderr.strip():
+            print(result.stderr.strip())
+        return False
+    return LONG_SCREENSHOT.exists()
+
+
+def screenshot_to_pdf() -> None:
+    import fitz  # type: ignore
+    from PIL import Image
+
+    Image.MAX_IMAGE_PIXELS = None
+    image = Image.open(LONG_SCREENSHOT)
+    page_width = 595
+    page_height = 842
+    margin = 18
+    target_width = page_width - (margin * 2)
+    scale = target_width / image.width
+    slice_height = int((page_height - (margin * 2)) / scale)
+
+    doc = fitz.open()
+    y = 0
+    while y < image.height:
+        bottom = min(image.height, y + slice_height)
+        crop = image.crop((0, y, image.width, bottom))
+        stream = io.BytesIO()
+        crop.save(stream, format="PNG", optimize=True)
+        display_height = crop.height * scale
+        page = doc.new_page(width=page_width, height=display_height + (margin * 2))
+        rect = fitz.Rect(margin, margin, margin + target_width, margin + display_height)
+        page.insert_image(rect, stream=stream.getvalue())
+        y = bottom
+    doc.save(SNAPSHOT_PDF, garbage=4, deflate=True)
+    doc.close()
+    image.close()
 
 
 def draw_pdf_with_fitz() -> None:
@@ -173,7 +228,7 @@ def draw_pdf_with_fitz() -> None:
         y += needed + gap
 
     put("张威健（Tim Zhang）Portfolio Snapshot", 20, (0.08, 0.08, 0.07), 8)
-    put(f"生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M')} ｜ 国内访问兜底：GitHub Pages + EdgeOne Pages 镜像 + 离线包", 9, (0.38, 0.37, 0.34), 16)
+    put(f"生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M')} ｜ 个人主页快照", 9, (0.38, 0.37, 0.34), 16)
     for title, body in SNAPSHOT_SECTIONS:
         put(title, 15, (0.72, 0.32, 0.21), 4)
         for paragraph in body.split("\n"):
@@ -186,16 +241,21 @@ def draw_pdf_with_fitz() -> None:
 
 def write_snapshot_pdf() -> None:
     SNAPSHOT_HTML.write_text(snapshot_html(), encoding="utf-8")
-    try:
-        draw_pdf_with_fitz()
-    except Exception as exc:
-        resume = ASSETS / "docs/Tim_Zhang_Resume.pdf"
-        if not resume.exists():
-            raise
-        shutil.copy2(resume, SNAPSHOT_PDF)
-        print(f"Warning: snapshot PDF fallback copied resume because PDF rendering failed: {exc}")
+    if capture_homepage_screenshot():
+        screenshot_to_pdf()
+    else:
+        try:
+            draw_pdf_with_fitz()
+        except Exception as exc:
+            resume = ASSETS / "docs/Tim_Zhang_Resume.pdf"
+            if not resume.exists():
+                raise
+            shutil.copy2(resume, SNAPSHOT_PDF)
+            print(f"Warning: snapshot PDF fallback copied resume because PDF rendering failed: {exc}")
     shutil.copy2(SNAPSHOT_PDF, DIST / SNAPSHOT_PDF.name)
     shutil.copy2(SNAPSHOT_HTML, DIST / SNAPSHOT_HTML.name)
+    if LONG_SCREENSHOT.exists():
+        shutil.copy2(LONG_SCREENSHOT, DIST / LONG_SCREENSHOT.name)
 
 
 def write_zip() -> None:
