@@ -84,9 +84,11 @@ def apply_resume_script(profile: dict) -> None:
     github = profile["github"]
     contact_line = f'{email} | {hk["label"]}: {hk["display"]} | {mainland["label"]}: {mainland["display"]}'
     links_line = f'Portfolio: {portfolio["resume_display"]} | GitHub: {github["display"]}'
+    portfolio_url = portfolio.get("resume_url", portfolio["future"])
+    github_url = github["url"]
     text = RESUME_SCRIPT.read_text(encoding="utf-8")
     text = re.sub(
-        r'^CONTACT_LINE = .*$',
+        r'^CONTACT_LINE = .*$', 
         f"CONTACT_LINE = {json.dumps(contact_line)}",
         text,
         count=1,
@@ -99,7 +101,21 @@ def apply_resume_script(profile: dict) -> None:
         count=1,
         flags=re.M,
     )
-    if contact_line not in text or links_line not in text:
+    text = re.sub(
+        r'^PORTFOLIO_URL = .*$',
+        f"PORTFOLIO_URL = {json.dumps(portfolio_url)}",
+        text,
+        count=1,
+        flags=re.M,
+    )
+    text = re.sub(
+        r'^GITHUB_URL = .*$',
+        f"GITHUB_URL = {json.dumps(github_url)}",
+        text,
+        count=1,
+        flags=re.M,
+    )
+    if contact_line not in text or links_line not in text or portfolio_url not in text or github_url not in text:
         raise RuntimeError("Resume script profile replacement failed.")
     RESUME_SCRIPT.write_text(text, encoding="utf-8")
 

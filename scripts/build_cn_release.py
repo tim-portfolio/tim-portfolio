@@ -89,6 +89,7 @@ def copy_site() -> None:
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
     shutil.copy2(ROOT / "index.html", DIST / "index.html")
+    shutil.copy2(ROOT / "go.html", DIST / "go.html")
     shutil.copytree(ASSETS, DIST / "assets", ignore=shutil.ignore_patterns(".DS_Store"))
     if README.exists():
         shutil.copy2(README, DIST / "README_CN.md")
