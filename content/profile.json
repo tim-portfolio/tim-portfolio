@@ -17,8 +17,9 @@
     }
   },
   "portfolio": {
-    "primary": "https://portfolio.timzhang.cn/",
+    "primary": "https://tim-portfolio.github.io/tim-portfolio/",
     "resume_display": "portfolio.timzhang.cn",
+    "resume_url": "https://portfolio.timzhang.cn/go.html",
     "future": "https://portfolio.timzhang.cn",
     "edgeone": "https://tim-portfolio.edgeone.app"
   },
