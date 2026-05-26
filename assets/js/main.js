@@ -203,6 +203,146 @@ document.addEventListener("DOMContentLoaded", () => {
     typewriters.forEach(finishTypewriter);
   }
 
+  const setupEvidenceBoards = () => {
+    const boards = Array.from(document.querySelectorAll("[data-board-carousel]"));
+    if (!boards.length) return;
+
+    boards.forEach((board) => {
+      const track = board.querySelector(".evidence-board-track");
+      if (!track) return;
+      const originals = Array.from(track.children);
+      if (originals.length < 2) return;
+
+      let index = 0;
+      let timer = null;
+      let resizeTimer = null;
+
+      const configuredVisible = Number(board.dataset.boardVisible || 0);
+      const intervalMs = Number(board.dataset.boardInterval || 5000);
+      let prevButton = null;
+      let nextButton = null;
+
+      const visibleCount = () => {
+        if (configuredVisible > 0) return configuredVisible;
+        return window.innerWidth <= 760 ? 1 : 2;
+      };
+
+      const clearClones = () => {
+        Array.from(track.querySelectorAll("[data-carousel-clone='true']")).forEach((node) => node.remove());
+      };
+
+      const appendClones = () => {
+        clearClones();
+        originals.slice(0, visibleCount()).forEach((node) => {
+          const clone = node.cloneNode(true);
+          clone.setAttribute("aria-hidden", "true");
+          clone.setAttribute("data-carousel-clone", "true");
+          track.appendChild(clone);
+        });
+      };
+
+      const stepWidth = () => {
+        const firstCard = track.querySelector(".evidence-board-card");
+        if (!firstCard) return 0;
+        const styles = window.getComputedStyle(track);
+        const gap = parseFloat(styles.columnGap || styles.gap || "0") || 0;
+        return firstCard.getBoundingClientRect().width + gap;
+      };
+
+      const moveTo = (nextIndex, animate = true) => {
+        track.style.transition = animate ? "transform 420ms cubic-bezier(0.22, 1, 0.36, 1)" : "none";
+        track.style.transform = `translateX(${-nextIndex * stepWidth()}px)`;
+        if (!animate) {
+          track.getBoundingClientRect();
+          track.style.transition = "transform 420ms cubic-bezier(0.22, 1, 0.36, 1)";
+        }
+      };
+
+      const reset = () => {
+        index = 0;
+        appendClones();
+        moveTo(index, false);
+      };
+
+      const advance = () => {
+        index += 1;
+        moveTo(index, true);
+        if (index >= originals.length) {
+          window.setTimeout(() => {
+            index = 0;
+            moveTo(index, false);
+          }, 430);
+        }
+      };
+
+      const previous = () => {
+        index = index <= 0 ? originals.length - 1 : index - 1;
+        moveTo(index, true);
+      };
+
+      const start = () => {
+        if (prefersReducedMotion) return;
+        if (timer) return;
+        timer = window.setInterval(advance, intervalMs);
+      };
+
+      const stop = () => {
+        if (!timer) return;
+        window.clearInterval(timer);
+        timer = null;
+      };
+
+      const restart = () => {
+        stop();
+        start();
+      };
+
+      const ensureControls = () => {
+        if (board.querySelector(".evidence-board-nav")) return;
+        const nav = document.createElement("div");
+        nav.className = "evidence-board-nav";
+
+        prevButton = document.createElement("button");
+        prevButton.className = "evidence-board-button evidence-board-prev";
+        prevButton.type = "button";
+        prevButton.setAttribute("aria-label", "Previous image");
+        prevButton.textContent = "‹";
+
+        nextButton = document.createElement("button");
+        nextButton.className = "evidence-board-button evidence-board-next";
+        nextButton.type = "button";
+        nextButton.setAttribute("aria-label", "Next image");
+        nextButton.textContent = "›";
+
+        nav.append(prevButton, nextButton);
+        board.appendChild(nav);
+
+        prevButton.addEventListener("click", () => {
+          previous();
+          restart();
+        });
+        nextButton.addEventListener("click", () => {
+          advance();
+          restart();
+        });
+      };
+
+      reset();
+      ensureControls();
+      start();
+      board.addEventListener("mouseenter", stop);
+      board.addEventListener("mouseleave", start);
+      board.addEventListener("focusin", stop);
+      board.addEventListener("focusout", start);
+      window.addEventListener("resize", () => {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(reset, 120);
+      });
+    });
+  };
+
+  setupEvidenceBoards();
+
   if (toggle && panel) {
     toggle.addEventListener("click", () => {
       const expanded = toggle.getAttribute("aria-expanded") === "true";

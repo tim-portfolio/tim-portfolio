@@ -9,7 +9,7 @@
 | `Tim_Zhang_Portfolio_Snapshot_CN.pdf` | 中文个人主页 PDF 快照 |
 | `Tim_Zhang_Portfolio_Snapshot_EN.pdf` | 英文个人主页 PDF 快照 |
 | `index.html` | 完整个人主页离线版 |
-| `assets/` | 图片、视频、简历等页面素材 |
+| `assets/` | 图片、视频等页面素材 |
 
 ## 使用方式
 

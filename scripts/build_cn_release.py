@@ -70,7 +70,7 @@ SNAPSHOT_SECTIONS = [
         "代表项目",
         "SRR 智能体案件处理系统：岭南杯二等奖、广州电视台报道、公开参考实现，并标注 SRR 专利申请准备中。\n"
         "MCC FWA 保险理赔反欺诈图谱：展示 38,659 claims、1.61M nodes、2.57M edges、Neo4j/Spanner Graph-ready、FastAPI + LLM claims review。\n"
-        "GaitGPT 临床步态分析智能助手：展示研究型 AI 工作流、文献检索、规则/模板优先架构和临床解释。\n"
+        "GaitGPT 隐私优先步态研究助手：展示研究型 AI 工作流、文献检索、规则/模板优先架构和生物力学校验；专利敏感实现细节暂不公开。\n"
         "企业数据平台：跨国零售企业级数据平台与商业银行数据中台，不展示具体公司名。",
     ),
     (
@@ -90,7 +90,11 @@ def copy_site() -> None:
     DIST.mkdir(parents=True)
     shutil.copy2(ROOT / "index.html", DIST / "index.html")
     shutil.copy2(ROOT / "go.html", DIST / "go.html")
-    shutil.copytree(ASSETS, DIST / "assets", ignore=shutil.ignore_patterns(".DS_Store"))
+    shutil.copytree(
+        ASSETS,
+        DIST / "assets",
+        ignore=shutil.ignore_patterns(".DS_Store", "Tim_Zhang_Resume*.pdf", "Tim_Zhang_Resume*.docx"),
+    )
     if README.exists():
         shutil.copy2(README, DIST / "README_CN.md")
     if README_EN.exists():
@@ -320,7 +324,7 @@ This is an offline version of the portfolio for quick review when the website is
 | `Tim_Zhang_Portfolio_Snapshot_EN.pdf` | English PDF snapshot |
 | `Tim_Zhang_Portfolio_Snapshot_CN.pdf` | Chinese PDF snapshot |
 | `index.html` | Full offline portfolio page |
-| `assets/` | Images, videos, resume, and page assets |
+| `assets/` | Images, videos, and page assets |
 
 ## How to Use
 
@@ -382,7 +386,7 @@ def assert_release() -> None:
     assert "fonts.gstatic.com" not in index
     assert "Global link / 海外链接" in index
     assert "Source Serif 4" not in css
-    assert (DIST / "assets/docs/Tim_Zhang_Resume.pdf").exists()
+    assert not any((DIST / "assets/docs").glob("Tim_Zhang_Resume*"))
     assert (DIST / "assets/videos/gaitgpt/gaitgpt-flash2.mp4").exists()
     assert SNAPSHOT_PDF.exists()
     assert SNAPSHOT_PDFS["zh"].exists()
