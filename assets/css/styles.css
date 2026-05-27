@@ -860,7 +860,7 @@ h4 {
   order: 1;
 }
 
-#gaitgpt {
+#uniflo {
   order: 2;
 }
 
@@ -868,12 +868,16 @@ h4 {
   order: 3;
 }
 
-#enterprise-data {
+#gaitgpt {
   order: 4;
 }
 
-#banking-data {
+#enterprise-data {
   order: 5;
+}
+
+#banking-data {
+  order: 6;
 }
 
 .project-story:hover {
@@ -1457,11 +1461,14 @@ h4 {
   box-shadow: 0 0 0 1px rgba(232, 230, 220, 0.95);
 }
 
-.story-feature-shot img {
+.story-feature-shot img,
+.story-feature-shot video {
+  display: block;
   width: 100%;
   height: 22rem;
   object-fit: cover;
   object-position: center;
+  background: #151515;
 }
 
 .story-feature-shot figcaption {
@@ -2030,7 +2037,8 @@ h4 {
     padding: 0 1rem 1rem;
   }
 
-  .story-feature-shot img {
+  .story-feature-shot img,
+  .story-feature-shot video {
     height: auto;
   }
 
