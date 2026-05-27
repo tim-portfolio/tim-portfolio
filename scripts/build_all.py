@@ -13,9 +13,13 @@ CONSULTING = ROOT.parent / "咨询" / "00_当前主页与简历"
 RESUME_SCRIPT = CONSULTING / "build_resume_v5.py"
 RESUME_DOCX = CONSULTING / "Tim_Zhang_Resume_v5.docx"
 RESUME_PDF = CONSULTING / "Tim_Zhang_Resume_v5.pdf"
+RESUME_DOCX_CN = CONSULTING / "Tim_Zhang_Resume_v5_CN.docx"
+RESUME_PDF_CN = CONSULTING / "Tim_Zhang_Resume_v5_CN.pdf"
 RENDER_DIR = CONSULTING / "resume_v5_render"
+RENDER_DIR_CN = CONSULTING / "resume_v5_render_cn"
 RENDER_SCRIPT = Path("/Users/0xtt/.codex/plugins/cache/openai-primary-runtime/documents/26.521.10419/skills/documents/render_docx.py")
 PORTFOLIO_RESUME = ROOT / "assets" / "docs" / "Tim_Zhang_Resume.pdf"
+PORTFOLIO_RESUME_CN = ROOT / "assets" / "docs" / "Tim_Zhang_Resume_CN.pdf"
 
 
 def run(cmd: list[str], cwd: Path) -> None:
@@ -33,6 +37,14 @@ def main() -> None:
         raise RuntimeError(f"Rendered PDF not found: {rendered_pdf}")
     shutil.copy2(rendered_pdf, RESUME_PDF)
     shutil.copy2(rendered_pdf, PORTFOLIO_RESUME)
+    if RENDER_DIR_CN.exists():
+        shutil.rmtree(RENDER_DIR_CN)
+    run([sys.executable, str(RENDER_SCRIPT), str(RESUME_DOCX_CN), "--output_dir", str(RENDER_DIR_CN), "--emit_pdf"], CONSULTING)
+    rendered_pdf_cn = RENDER_DIR_CN / RESUME_PDF_CN.name
+    if not rendered_pdf_cn.exists():
+        raise RuntimeError(f"Rendered PDF not found: {rendered_pdf_cn}")
+    shutil.copy2(rendered_pdf_cn, RESUME_PDF_CN)
+    shutil.copy2(rendered_pdf_cn, PORTFOLIO_RESUME_CN)
     run([sys.executable, "scripts/build_cn_release.py"], ROOT)
     print("All portfolio assets rebuilt from content/profile.json.")
 
