@@ -20,10 +20,25 @@ python3 scripts/build_cn_release.py
 
 ## EdgeOne Pages 上传
 
-1. 运行生成脚本。
+### CLI 自动发布
+
+```bash
+scripts/deploy_edgeone.sh
+```
+
+| 本地配置 | 说明 |
+|---|---|
+| `.edgeone/.Token` | EdgeOne API Token，本地保存，不提交 |
+| `EDGEONE_PROJECT_NAME` | 默认 `tim-portfolio` |
+| `EDGEONE_ENVIRONMENT` | 默认 `production` |
+| `EDGEONE_AREA` | 默认 `global` |
+
+### 手动上传备用
+
+1. 运行 `python3 scripts/build_cn_release.py`。
 2. 打开 EdgeOne Pages 的 Upload 入口。
 3. 上传 `dist-cn/` 目录内全部文件。
-4. 获得默认访问入口后，作为 GitHub Pages 的备用链接。
+4. 获得默认访问入口后，作为备用链接。
 
 ## 交付习惯
 
