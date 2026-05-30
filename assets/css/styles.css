@@ -335,6 +335,7 @@ h4 {
 .nav-toggle:focus-visible,
 .text-link:focus-visible,
 .story-link-card:focus-visible,
+.fintech-source-card:focus-visible,
 .story-media-card:focus-visible,
 .contact-card a:focus-visible {
   outline: 2px solid var(--focus);
@@ -647,7 +648,7 @@ h4 {
 
 .hero-metrics {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   margin-top: 1.4rem;
 }
@@ -736,8 +737,140 @@ h4 {
   line-height: 1.55;
 }
 
+.recognition-source-grid {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.95rem;
+}
+
+.recognition-source-grid .fintech-source-card {
+  padding: 0.72rem;
+  border-radius: var(--radius-sm);
+}
+
+.fintech-award-spotlight {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(1rem, 3vw, 1.6rem);
+  align-items: center;
+  scroll-margin-top: calc(var(--nav-height) + 1rem);
+  margin-bottom: 2.25rem;
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+  border-radius: var(--radius-lg);
+  background: #fffaf2;
+  box-shadow: 0 0 0 1px rgba(201, 100, 66, 0.16), rgba(20, 20, 19, 0.06) 0 16px 42px;
+}
+
+.fintech-award-media {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: 0 0 0 1px rgba(232, 230, 220, 0.95);
+}
+
+.fintech-award-media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+}
+
+.fintech-award-media figcaption {
+  padding: 0.85rem 1rem 1rem;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.fintech-award-copy {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.fintech-award-copy h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 500;
+  line-height: 0.98;
+}
+
+.fintech-award-copy p {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.fintech-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.fintech-proof-grid div {
+  padding: 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--border-strong);
+}
+
+.fintech-proof-grid span {
+  display: block;
+  color: var(--brand);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fintech-proof-grid strong {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.fintech-source-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.fintech-source-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text-deep);
+  text-decoration: none;
+  box-shadow: 0 0 0 1px rgba(201, 100, 66, 0.14);
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.fintech-source-card:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(201, 100, 66, 0.24), rgba(20, 20, 19, 0.08) 0 10px 24px;
+}
+
+.fintech-source-card span {
+  color: var(--brand);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fintech-source-card strong {
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
 .info-card,
-.support-card,
 .contact-card {
   padding: 1.35rem;
   border-radius: var(--radius-lg);
@@ -747,7 +880,6 @@ h4 {
 }
 
 .info-card:hover,
-.support-card:hover,
 .contact-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 0 1px var(--border-strong), rgba(20, 20, 19, 0.07) 0 10px 28px;
@@ -860,24 +992,28 @@ h4 {
   order: 1;
 }
 
-#uniflo {
+#secureyield {
   order: 2;
 }
 
-#fwa {
+#uniflo {
   order: 3;
 }
 
-#gaitgpt {
+#fwa {
   order: 4;
 }
 
-#enterprise-data {
+#gaitgpt {
   order: 5;
 }
 
-#banking-data {
+#enterprise-data {
   order: 6;
+}
+
+#banking-data {
+  order: 7;
 }
 
 .project-story:hover {
@@ -1324,7 +1460,7 @@ h4 {
 
 .fwa-material-grid {
   display: grid;
-  grid-template-columns: minmax(11rem, 0.7fr) repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.85rem;
 }
 
@@ -1450,14 +1586,10 @@ h4 {
 }
 
 .story-feature-shot {
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(15rem, 0.65fr);
-  gap: 0;
-  align-items: stretch;
   overflow: hidden;
   margin: 0;
   border-radius: var(--radius-md);
-  background: var(--surface-warm);
+  background: #151515;
   box-shadow: 0 0 0 1px rgba(232, 230, 220, 0.95);
 }
 
@@ -1469,34 +1601,6 @@ h4 {
   object-fit: cover;
   object-position: center;
   background: #151515;
-}
-
-.story-feature-shot figcaption {
-  display: grid;
-  align-content: center;
-  gap: 0.65rem;
-  padding: 1.2rem;
-}
-
-.story-feature-shot span {
-  color: var(--brand);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.story-feature-shot strong {
-  color: var(--text-deep);
-  font-size: 1.15rem;
-  line-height: 1.35;
-}
-
-.story-feature-shot em {
-  color: var(--text-soft);
-  font-size: 0.86rem;
-  font-style: normal;
-  line-height: 1.55;
 }
 
 .story-proof-grid {
@@ -1833,32 +1937,6 @@ h4 {
   color: var(--brand);
 }
 
-.supporting-block {
-  margin-top: 3rem;
-}
-
-.supporting-header {
-  margin-bottom: 1.25rem;
-}
-
-.support-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-  gap: 1rem;
-}
-
-.support-card h4 {
-  font-family: var(--font-serif);
-  font-size: 1.45rem;
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-.support-card p {
-  margin-top: 0.9rem;
-  color: var(--text-soft);
-}
-
 .resume-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
@@ -2006,8 +2084,10 @@ h4 {
   }
 
 	  .capability-grid,
-	  .support-grid,
 	  .recognition-grid,
+	  .fintech-award-spotlight,
+	  .fintech-proof-grid,
+	  .fintech-source-grid,
 	  .hero-signals,
 	  .hero-metrics,
   .story-impact-strip,

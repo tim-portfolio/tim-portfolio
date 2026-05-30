@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply shared profile/contact data to portfolio and resume sources."""
+"""Apply shared profile/contact data to portfolio sources."""
 from __future__ import annotations
 
 import json
@@ -8,11 +8,9 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CONSULTING = ROOT.parent / "咨询" / "00_当前主页与简历"
 PROFILE = ROOT / "content" / "profile.json"
 INDEX = ROOT / "index.html"
 I18N = ROOT / "assets" / "js" / "i18n.js"
-RESUME_SCRIPT = CONSULTING / "build_resume_v5.py"
 
 
 def read_profile() -> dict:
@@ -76,56 +74,11 @@ def apply_i18n(profile: dict) -> None:
     I18N.write_text(text, encoding="utf-8")
 
 
-def apply_resume_script(profile: dict) -> None:
-    email = profile["email"]
-    hk = profile["phones"]["hk"]
-    mainland = profile["phones"]["mainland"]
-    portfolio = profile["portfolio"]
-    github = profile["github"]
-    contact_line = f'{email} | {hk["label"]}: {hk["display"]} | {mainland["label"]}: {mainland["display"]}'
-    links_line = f'Portfolio: {portfolio["resume_display"]} | GitHub: {github["display"]}'
-    portfolio_url = portfolio.get("resume_url", portfolio["future"])
-    github_url = github["url"]
-    text = RESUME_SCRIPT.read_text(encoding="utf-8")
-    text = re.sub(
-        r'^CONTACT_LINE = .*$', 
-        f"CONTACT_LINE = {json.dumps(contact_line)}",
-        text,
-        count=1,
-        flags=re.M,
-    )
-    text = re.sub(
-        r'^LINKS_LINE = .*$',
-        f"LINKS_LINE = {json.dumps(links_line)}",
-        text,
-        count=1,
-        flags=re.M,
-    )
-    text = re.sub(
-        r'^PORTFOLIO_URL = .*$',
-        f"PORTFOLIO_URL = {json.dumps(portfolio_url)}",
-        text,
-        count=1,
-        flags=re.M,
-    )
-    text = re.sub(
-        r'^GITHUB_URL = .*$',
-        f"GITHUB_URL = {json.dumps(github_url)}",
-        text,
-        count=1,
-        flags=re.M,
-    )
-    if contact_line not in text or links_line not in text or portfolio_url not in text or github_url not in text:
-        raise RuntimeError("Resume script profile replacement failed.")
-    RESUME_SCRIPT.write_text(text, encoding="utf-8")
-
-
 def main() -> None:
     profile = read_profile()
     apply_index(profile)
     apply_i18n(profile)
-    apply_resume_script(profile)
-    print("Profile applied to portfolio and resume sources.")
+    print("Profile applied to portfolio sources. Resume attachments are canonical in CareerOS/profile/resume.")
 
 
 if __name__ == "__main__":

@@ -16,10 +16,13 @@
 1. 中文场景打开 `Tim_Zhang_Portfolio_Snapshot_CN.pdf`。
 2. 英文场景打开 `Tim_Zhang_Portfolio_Snapshot_EN.pdf`。
 3. 如需查看完整网页效果，解压后打开 `index.html`。
+4. 简历附件由 CareerOS 单独管理，不打包在主页离线包中。
 
 ## 内容说明
 
-- SRR 智能体案件处理系统
-- MCC FWA 保险理赔反欺诈图谱
-- GaitGPT 临床步态分析智能助手
+- SRR 智能体案件处理系统（岭南杯二等奖、RMB 10,000 奖金）
+- SecureYield 金融科技获奖方案（绿色算力 Token + RWA e-Token 双 Token 机制，含参赛 landing page / technology page）
+- Uniflo / OpenUniflo 软硬多端一体智能化持续交付平台
+- MCC FWA 保险理赔反欺诈图谱（含项目落地页与合作公司官方页）
+- GaitGPT 临床步态研究双向翻译桥梁
 - 跨国零售企业级数据平台与商业银行数据中台经历

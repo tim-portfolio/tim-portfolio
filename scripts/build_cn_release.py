@@ -68,9 +68,11 @@ SNAPSHOT_SECTIONS = [
     ),
     (
         "代表项目",
-        "SRR 智能体案件处理系统：岭南杯二等奖、广州电视台报道、公开参考实现，并标注 SRR 专利申请准备中。\n"
-        "MCC FWA 保险理赔反欺诈图谱：展示 38,659 claims、1.61M nodes、2.57M edges、Neo4j/Spanner Graph-ready、FastAPI + LLM claims review。\n"
-        "GaitGPT 隐私优先步态研究助手：展示研究型 AI 工作流、文献检索、规则/模板优先架构和生物力学校验；专利敏感实现细节暂不公开。\n"
+        "SRR 智能体案件处理系统：岭南杯二等奖、RMB 10,000 奖金、广州电视台报道、公开参考实现，并标注 SRR 专利申请准备中。\n"
+        "SecureYield 金融科技方案：香港恒生大学大学联校金融科技创新概念比赛 2026 2nd Runner-up，HK$5,000 奖金，聚焦绿色算力 Token + RWA e-Token 双 Token 机制与三权分立合规模型，并提供参赛 landing page 与 technology page 作为项目证据。\n"
+        "Uniflo / OpenUniflo 本地优先 Agent Runtime：展示任务空间、工作区权限、Skill 编排、trace、可复用 Application 候选和专利准备方向。\n"
+        "MCC FWA 保险理赔反欺诈图谱：展示 38,659 claims、1.61M nodes、2.57M edges、Neo4j/Spanner Graph-ready、FastAPI + LLM claims review，并提供项目 landing page 与合作公司官方页作为背景材料。\n"
+        "GaitGPT 临床步态研究双向翻译桥梁：连接症状语言、结构化步态指标与文献增强解释；专利敏感实现细节暂不公开。\n"
         "企业数据平台：跨国零售企业级数据平台与商业银行数据中台，不展示具体公司名。",
     ),
     (
@@ -279,11 +281,7 @@ def write_snapshot_pdf() -> None:
             try:
                 draw_pdf_with_fitz(SNAPSHOT_PDFS[language])
             except Exception as exc:
-                resume = ASSETS / "docs/Tim_Zhang_Resume.pdf"
-                if not resume.exists():
-                    raise
-                shutil.copy2(resume, SNAPSHOT_PDFS[language])
-                print(f"Warning: snapshot PDF fallback copied resume because PDF rendering failed: {exc}")
+                raise RuntimeError("Chinese snapshot PDF rendering failed.") from exc
             render_pdf_preview(SNAPSHOT_PDFS[language], LONG_SCREENSHOTS[language])
         else:
             shutil.copy2(SNAPSHOT_PDFS["zh"], SNAPSHOT_PDFS[language])
@@ -331,6 +329,16 @@ This is an offline version of the portfolio for quick review when the website is
 1. Open `Tim_Zhang_Portfolio_Snapshot_EN.pdf` first.
 2. Use `Tim_Zhang_Portfolio_Snapshot_CN.pdf` if a Chinese version is preferred.
 3. To view the full page experience, unzip the package and open `index.html`.
+4. Resume attachments are managed separately in CareerOS and are not packaged here.
+
+## Content Highlights
+
+- SRR Agentic Case Processing System
+- SecureYield FinTech competition-winning proposal with landing and technology pages
+- Uniflo / OpenUniflo multi-end intelligent continuous delivery platform
+- MCC FWA insurance claims fraud graph intelligence with project and partner-company evidence links
+- GaitGPT bidirectional clinical gait translation bridge
+- Enterprise data platform experience across multinational retail and commercial banking
 """,
         encoding="utf-8",
     )
@@ -387,6 +395,9 @@ def assert_release() -> None:
     assert "Global link / 海外链接" in index
     assert "Source Serif 4" not in css
     assert not any((DIST / "assets/docs").glob("Tim_Zhang_Resume*"))
+    assert not any(LATEST.glob("Tim_Zhang_Resume*"))
+    with zipfile.ZipFile(OFFLINE_ZIP) as archive:
+        assert not any("Tim_Zhang_Resume" in name for name in archive.namelist())
     assert (DIST / "assets/videos/gaitgpt/gaitgpt-flash2.mp4").exists()
     assert SNAPSHOT_PDF.exists()
     assert SNAPSHOT_PDFS["zh"].exists()
