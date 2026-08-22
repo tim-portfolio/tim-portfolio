@@ -68,11 +68,11 @@ SNAPSHOT_SECTIONS = [
     ),
     (
         "代表项目",
-        "SRR 智能体案件处理系统：岭南杯二等奖、RMB 10,000 奖金、广州电视台报道、公开参考实现，并标注 SRR 专利申请准备中。\n"
+        "SRR 智能体案件处理系统：岭南杯二等奖、RMB 10,000 奖金、广州电视台报道、CIC AI Award 展示、LUX 孵化启动展陈、公开参考实现，美国临时专利已提交（申请号 64/092,622）。\n"
         "SecureYield 金融科技方案：香港恒生大学大学联校金融科技创新概念比赛 2026 2nd Runner-up，HK$5,000 奖金，聚焦绿色算力 Token + RWA e-Token 双 Token 机制与三权分立合规模型，并提供参赛 landing page 与 technology page 作为项目证据。\n"
         "Uniflo / OpenUniflo 本地优先 Agent Runtime：展示任务空间、工作区权限、Skill 编排、trace、可复用 Application 候选和专利准备方向。\n"
         "MCC FWA 保险理赔反欺诈图谱：展示 38,659 claims、1.61M nodes、2.57M edges、Neo4j/Spanner Graph-ready、FastAPI + LLM claims review，并提供项目 landing page 与合作公司官方页作为背景材料。\n"
-        "GaitGPT 临床步态研究双向翻译桥梁：连接症状语言、结构化步态指标与文献增强解释；专利敏感实现细节暂不公开。\n"
+        "GaitGPT 临床步态研究双向翻译桥梁：SVIIF 2026 金奖及两项特别奖、LUX 孵化启动展陈、美国临时专利已提交（申请号 64/092,416）；论文准备中，演示视频现已公开。\n"
         "企业数据平台：跨国零售企业级数据平台与商业银行数据中台，不展示具体公司名。",
     ),
     (

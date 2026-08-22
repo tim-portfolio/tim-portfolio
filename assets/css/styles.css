@@ -755,12 +755,27 @@ h4 {
   margin-top: 0.85rem;
 }
 
+.recognition-thumb-strip:has(> img:only-child) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .recognition-thumb-strip img {
   width: 100%;
   height: 3.2rem;
   border-radius: var(--radius-xs);
   object-fit: cover;
   box-shadow: 0 0 0 1px rgba(201, 100, 66, 0.14);
+}
+
+.recognition-thumb-strip.recognition-thumb-full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.recognition-thumb-strip.recognition-thumb-full img {
+  height: auto;
+  max-height: 52rem;
+  object-fit: contain;
+  object-position: top center;
 }
 
 .fintech-award-spotlight {
@@ -1113,6 +1128,52 @@ h4 {
 
 #gaitgpt {
   order: 5;
+}
+
+#gaitgpt .story-body {
+  gap: 0.85rem;
+}
+
+#gaitgpt .story-impact {
+  padding: 0.7rem 0.8rem;
+}
+
+#gaitgpt .story-impact-label {
+  margin-top: 0.28rem;
+}
+
+#gaitgpt .story-video-panel {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+#gaitgpt .story-video-panel .story-label {
+  margin: 0;
+  padding: 0.55rem 0.85rem;
+}
+
+#gaitgpt .research-status-card {
+  gap: 0.28rem;
+  padding: 0.7rem 0.8rem;
+}
+
+#gaitgpt .story-grid {
+  gap: 0.65rem 1rem;
+}
+
+#gaitgpt .story-link-card {
+  min-height: 0;
+  padding: 0.75rem 0.85rem;
+}
+
+#gaitgpt .evidence-board-card figcaption {
+  min-height: 0;
+  padding: 0.55rem 0.75rem 0.65rem;
+}
+
+#gaitgpt .story-footer {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
 }
 
 #enterprise-data {
